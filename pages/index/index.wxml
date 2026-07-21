@@ -1,0 +1,69 @@
+<view class="container">
+  <!-- 顶部品牌区 -->
+  <view class="hero">
+    <view class="hero-title">教程大全</view>
+    <view class="hero-sub">把生活小技巧，一步步教给你</view>
+  </view>
+
+  <!-- 搜索 -->
+  <view class="search-bar">
+    <text class="search-icon">🔍</text>
+    <input
+      class="search-input"
+      placeholder="搜索教程，如：地铁、番茄炒蛋"
+      placeholder-class="search-ph"
+      value="{{keyword}}"
+      bindinput="onSearchInput"
+      confirm-type="search"
+    />
+    <text wx:if="{{keyword}}" class="search-clear" bindtap="onClear">✕</text>
+  </view>
+
+  <!-- 分类 -->
+  <scroll-view class="cats" scroll-x="true">
+    <view
+      wx:for="{{categories}}"
+      wx:key="*this"
+      class="cat {{activeCategory === item ? 'cat-active' : ''}}"
+      data-cat="{{item}}"
+      bindtap="onCategoryTap"
+    >{{item}}</view>
+  </scroll-view>
+
+  <!-- 列表标题 -->
+  <view class="section-head">
+    <view class="section-title">{{activeCategory === '全部' ? '全部教程' : activeCategory + '教程'}}</view>
+    <view class="section-count">{{list.length}} 篇</view>
+  </view>
+
+  <!-- 列表 -->
+  <view wx:if="{{list.length > 0}}">
+    <view
+      class="card tutorial"
+      wx:for="{{list}}"
+      wx:key="id"
+      hover-class="card-hover"
+      data-id="{{item.id}}"
+      bindtap="goDetail"
+    >
+      <view class="t-emoji">{{item.emoji || '📘'}}</view>
+      <view class="t-body">
+        <view class="t-title">{{item.title}}</view>
+        <view class="t-summary">{{item.summary}}</view>
+        <view class="t-meta">
+          <text class="tag">{{item.category}}</text>
+          <text class="dot">·</text>
+          <text class="m">{{item.steps.length}} 步</text>
+          <text wx:if="{{item.videoUrl || item.videoPath}}" class="m video-flag">🎬 视频</text>
+        </view>
+      </view>
+      <view class="chevron">›</view>
+    </view>
+  </view>
+
+  <view wx:else class="empty">
+    <view class="empty-emoji">📭</view>
+    <view>没有找到相关教程</view>
+    <view class="empty-sub">去「上传」分享一个吧～</view>
+  </view>
+</view>

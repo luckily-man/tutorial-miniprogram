@@ -1,0 +1,59 @@
+<view wx:if="{{tutorial}}" class="container detail">
+  <!-- 头部 hero -->
+  <view class="hero">
+    <view class="h-emoji">{{tutorial.emoji || '📘'}}</view>
+    <view class="h-info">
+      <view class="h-title">{{tutorial.title}}</view>
+      <view class="h-meta">
+        <text class="tag">{{tutorial.category}}</text>
+        <text class="h-author">by {{tutorial.author}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 简介 -->
+  <view class="card">
+    <view class="summary">{{tutorial.summary}}</view>
+  </view>
+
+  <!-- 视频 -->
+  <view class="card" wx:if="{{videoSrc}}">
+    <view class="sec-title"><text class="sec-bar"></text>视频教程</view>
+    <video
+      class="video"
+      src="{{videoSrc}}"
+      controls
+      show-center-play-btn
+      enable-danmu
+    ></video>
+  </view>
+  <view class="card" wx:else>
+    <view class="sec-title"><text class="sec-bar"></text>视频教程</view>
+    <view class="no-video">
+      <view class="nv-emoji">🎬</view>
+      <view>该教程暂无视频</view>
+    </view>
+  </view>
+
+  <!-- 文字步骤 -->
+  <view class="card">
+    <view class="sec-title"><text class="sec-bar"></text>分步说明（{{tutorial.steps.length}} 步）</view>
+    <view
+      class="step"
+      wx:for="{{tutorial.steps}}"
+      wx:key="title"
+      wx:for-index="idx"
+    >
+      <view class="step-no">{{idx + 1}}</view>
+      <view class="step-body">
+        <view class="step-title">{{item.title}}</view>
+        <view class="step-text">{{item.text}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view wx:elif="{{notFound}}" class="empty">
+  <view class="empty-emoji">🚫</view>
+  <view>教程不存在或已被删除</view>
+</view>

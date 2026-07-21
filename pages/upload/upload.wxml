@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="page-head">
+    <view class="ph-title">发布教程</view>
+    <view class="ph-sub">分享你的经验，帮到更多人</view>
+  </view>
+
+  <view class="card">
+    <view class="sec-title"><text class="sec-bar"></text>基本信息</view>
+    <view class="field">
+      <view class="label">标题 <text class="req">*</text></view>
+      <input class="input" placeholder="如：怎么坐高铁" placeholder-class="ph" value="{{title}}" data-field="title" bindinput="onInput" />
+    </view>
+    <view class="field">
+      <view class="label">分类</view>
+      <picker mode="selector" range="{{categories}}" value="{{catIndex}}" bindchange="onCategoryChange">
+        <view class="picker">{{categories[catIndex]}} <text class="picker-caret">▾</text></view>
+      </picker>
+    </view>
+    <view class="field field-last">
+      <view class="label">简介</view>
+      <textarea class="textarea" placeholder="一句话介绍这个教程" placeholder-class="ph" value="{{summary}}" data-field="summary" bindinput="onInput" maxlength="200" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="sec-title"><text class="sec-bar"></text>文字步骤</view>
+    <view class="step-item" wx:for="{{steps}}" wx:key="idx" wx:for-index="idx">
+      <view class="step-badge">第{{idx + 1}}步</view>
+      <textarea class="step-input" placeholder="写下这一步的操作" placeholder-class="ph" value="{{item}}" data-idx="{{idx}}" bindinput="onStepInput" />
+      <view class="step-del" wx:if="{{steps.length > 1}}" data-idx="{{idx}}" bindtap="removeStep">✕</view>
+    </view>
+    <view class="add-step" bindtap="addStep">+ 添加一步</view>
+  </view>
+
+  <view class="card">
+    <view class="sec-title"><text class="sec-bar"></text>视频（可选）</view>
+    <view wx:if="{{videoPath}}" class="video-box">
+      <video class="video" src="{{videoPath}}" controls></video>
+      <view class="video-del" bindtap="removeVideo">移除视频</view>
+    </view>
+    <view wx:else class="video-pick" bindtap="chooseVideo">
+      <view class="pick-plus">+</view>
+      <view class="pick-text">选择 / 拍摄视频</view>
+    </view>
+  </view>
+
+  <button class="btn-primary submit" bindtap="onSubmit" disabled="{{submitting}}">发布教程</button>
+  <view class="tip">教程保存在本机，仅当前设备可见。如需多人共享，请接入微信云开发（见 README）。</view>
+</view>

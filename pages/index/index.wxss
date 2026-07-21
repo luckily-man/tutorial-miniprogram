@@ -1,0 +1,166 @@
+/* 顶部品牌区 */
+.hero {
+  background: var(--grad);
+  border-radius: 28rpx;
+  padding: 40rpx 36rpx;
+  margin-bottom: 28rpx;
+  box-shadow: 0 12rpx 30rpx rgba(7, 193, 96, 0.25);
+}
+
+.hero-title {
+  color: #fff;
+  font-size: 44rpx;
+  font-weight: 800;
+  letter-spacing: 2rpx;
+}
+
+.hero-sub {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 26rpx;
+  margin-top: 12rpx;
+}
+
+/* 搜索 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 999rpx;
+  padding: 0 28rpx;
+  height: 80rpx;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 28rpx;
+}
+
+.search-icon {
+  font-size: 30rpx;
+  margin-right: 14rpx;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--text-1);
+}
+
+.search-ph {
+  color: var(--text-3);
+}
+
+.search-clear {
+  color: var(--text-3);
+  font-size: 28rpx;
+  padding: 0 8rpx;
+}
+
+/* 分类 */
+.cats {
+  white-space: nowrap;
+  margin-bottom: 28rpx;
+}
+
+.cat {
+  display: inline-block;
+  padding: 12rpx 32rpx;
+  margin-right: 16rpx;
+  background: #fff;
+  color: var(--text-2);
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  box-shadow: var(--shadow-sm);
+}
+
+.cat-active {
+  background: var(--grad);
+  color: #fff;
+  box-shadow: 0 8rpx 18rpx rgba(7, 193, 96, 0.3);
+  font-weight: 600;
+}
+
+/* 列表标题 */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 8rpx 4rpx 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.section-count {
+  font-size: 24rpx;
+  color: var(--text-3);
+}
+
+/* 教程卡片 */
+.tutorial {
+  display: flex;
+  align-items: center;
+}
+
+.t-emoji {
+  width: 96rpx;
+  height: 96rpx;
+  flex-shrink: 0;
+  border-radius: 22rpx;
+  background: linear-gradient(135deg, #eafff3 0%, #d6f7e6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  margin-right: 22rpx;
+}
+
+.t-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.t-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 10rpx;
+}
+
+.t-summary {
+  font-size: 24rpx;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.t-meta {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+}
+
+.dot {
+  margin: 0 12rpx;
+  color: var(--text-3);
+}
+
+.m {
+  color: var(--text-3);
+}
+
+.video-flag {
+  color: var(--primary-deep);
+}
+
+.chevron {
+  color: #cfd6dd;
+  font-size: 40rpx;
+  margin-left: 12rpx;
+  flex-shrink: 0;
+}

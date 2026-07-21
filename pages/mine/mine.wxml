@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="hero">
+    <view class="avatar">📚</view>
+    <view class="mine-info">
+      <view class="mine-name">我的教程</view>
+      <view class="mine-sub">共 {{list.length}} 篇 · 云端共享</view>
+    </view>
+  </view>
+
+  <view wx:if="{{list.length > 0}}">
+    <view class="card item" wx:for="{{list}}" wx:key="id" hover-class="card-hover" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="item-emoji">{{item.emoji || '📘'}}</view>
+      <view class="item-main">
+        <view class="item-title">{{item.title}}</view>
+        <view class="item-meta">
+          <text class="tag">{{item.category}}</text>
+          <text class="dot">·</text>
+          <text class="m">{{item.steps.length}} 步</text>
+        </view>
+      </view>
+      <view class="item-del" wx:if="{{item.mine}}" catchtap="onDelete" data-id="{{item.id}}">删除</view>
+    </view>
+  </view>
+
+  <view wx:else class="empty">
+    <view class="empty-emoji">📭</view>
+    <view>还没有教程</view>
+    <view class="empty-sub">去「上传」分享一个吧～</view>
+  </view>
+
+  <button class="btn-primary upload-btn" bindtap="goUpload">去上传教程</button>
+</view>
