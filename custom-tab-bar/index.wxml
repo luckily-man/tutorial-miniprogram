@@ -1,0 +1,12 @@
+<view class="tab-bar">
+  <view
+    wx:for="{{visibleTabs}}"
+    wx:key="page"
+    class="tab-item {{selected === index ? 'tab-item-active' : ''}}"
+    data-page="{{item.page}}"
+    bindtap="switchTab"
+  >
+    <view class="tab-emoji">{{item.emoji}}</view>
+    <view class="tab-text">{{item.text}}</view>
+  </view>
+</view>

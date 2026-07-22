@@ -8,7 +8,7 @@ const SEED = [
   {
     id: 'seed-subway',
     title: '怎么坐地铁（新手必看）',
-    category: '地铁',
+    category: '行',
     emoji: '🚇',
     summary: '第一次坐地铁不知道怎么买票、怎么换乘？这篇手把手教你从进站到出站。',
     author: '官方示例',
@@ -25,7 +25,7 @@ const SEED = [
   {
     id: 'seed-plane',
     title: '怎么坐飞机（全流程）',
-    category: '飞机',
+    category: '行',
     emoji: '✈️',
     summary: '从买票、值机、安检到登机落地，坐飞机的全流程避坑指南。',
     author: '官方示例',
@@ -42,7 +42,7 @@ const SEED = [
   {
     id: 'seed-tomato',
     title: '怎么做番茄炒蛋',
-    category: '做菜',
+    category: '食',
     emoji: '🍅',
     summary: '国民下饭菜，十分钟搞定。关键在于蛋要嫩、番茄要出汁。',
     author: '官方示例',
@@ -58,7 +58,7 @@ const SEED = [
   {
     id: 'seed-coffee',
     title: '怎么煮一杯手冲咖啡',
-    category: '其他',
+    category: '生活',
     emoji: '☕',
     summary: '不用咖啡机，在家也能做出干净明亮的手冲咖啡。',
     author: '官方示例',

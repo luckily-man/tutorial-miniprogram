@@ -32,6 +32,7 @@
     }
   },
   "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
   "libVersion": "3.15.3",
   "appid": "wxeef4baa9cc564806",
   "projectname": "tutorial-miniprogram",

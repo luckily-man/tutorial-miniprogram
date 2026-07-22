@@ -1,4 +1,10 @@
-<view class="container">
+<view wx:if="{{denied}}" class="denied">
+  <view class="denied-emoji">🔒</view>
+  <view class="denied-title">无权限发布教程</view>
+  <view class="denied-sub">当前为「普通用户」，仅可查看教程。如需发布，请联系管理员将你设为「上传者」。</view>
+</view>
+
+<view wx:else class="container">
   <view class="page-head">
     <view class="ph-title">发布教程</view>
     <view class="ph-sub">分享你的经验，帮到更多人</view>
@@ -36,7 +42,10 @@
     <view class="sec-title"><text class="sec-bar"></text>视频（可选）</view>
     <view wx:if="{{videoPath}}" class="video-box">
       <video class="video" src="{{videoPath}}" controls></video>
-      <view class="video-del" bindtap="removeVideo">移除视频</view>
+      <view class="video-actions">
+        <view class="video-replace" bindtap="chooseVideo">替换视频</view>
+        <view class="video-del" bindtap="removeVideo">移除视频</view>
+      </view>
     </view>
     <view wx:else class="video-pick" bindtap="chooseVideo">
       <view class="pick-plus">+</view>
@@ -45,5 +54,4 @@
   </view>
 
   <button class="btn-primary submit" bindtap="onSubmit" disabled="{{submitting}}">发布教程</button>
-  <view class="tip">教程保存在本机，仅当前设备可见。如需多人共享，请接入微信云开发（见 README）。</view>
 </view>

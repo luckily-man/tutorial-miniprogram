@@ -1,0 +1,9 @@
+{
+  "name": "acceptInvite",
+  "version": "1.0.0",
+  "description": "用户激活角色邀请码",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

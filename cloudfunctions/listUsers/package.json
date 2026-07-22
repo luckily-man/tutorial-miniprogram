@@ -1,0 +1,9 @@
+{
+  "name": "listUsers",
+  "version": "1.0.0",
+  "description": "管理员列出所有用户角色",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

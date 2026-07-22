@@ -86,6 +86,159 @@ function videoSrcOf(tutorial) {
   return tutorial.videoPath || tutorial.videoUrl || ''
 }
 
+// ===== 角色 / 权限（云端函数校验）=====
+const ROLE_KEY = 'role'
+const OPENID_KEY = 'openid'
+
+// 启动鉴权：调用 getRole 云函数，返回 { openid, role } 并缓存
+function getRole() {
+  return wx.cloud.callFunction({ name: 'getRole' })
+    .then(function (res) {
+      const data = (res.result) || {}
+      const role = data.role || 'user'
+      const openid = data.openid || ''
+      wx.setStorageSync(ROLE_KEY, role)
+      if (openid) wx.setStorageSync(OPENID_KEY, openid)
+      return { role: role, openid: openid }
+    })
+    .catch(function (err) {
+      console.error('[store] getRole failed', err)
+      const role = wx.getStorageSync(ROLE_KEY) || 'user'
+      const openid = wx.getStorageSync(OPENID_KEY) || ''
+      return { role: role, openid: openid }
+    })
+}
+
+// 同步读取当前用户（先取缓存，避免等待云函数）
+function getRealUser() {
+  const app = getApp()
+  if (app && app.globalData && app.globalData.role) {
+    return { role: app.globalData.role, openid: app.globalData.openid }
+  }
+  return {
+    role: wx.getStorageSync(ROLE_KEY) || 'user',
+    openid: wx.getStorageSync(OPENID_KEY) || ''
+  }
+}
+
+// 读取「当前生效身份」：开启预览时返回模拟角色，否则返回真实角色
+function getCurrentUser() {
+  const app = getApp()
+  if (app && app.globalData && app.globalData.isPreview) {
+    return { role: app.globalData.previewRole || 'user', openid: app.globalData.openid }
+  }
+  return getRealUser()
+}
+
+// —— 本地预览（仅管理员用于查看其他角色的页面样式，不改变真实权限）——
+function setPreviewRole(role) {
+  const app = getApp()
+  if (!app || !app.globalData) return
+  app.globalData.previewRole = role
+  app.globalData.isPreview = true
+  refreshTabBars()
+}
+
+function clearPreview() {
+  const app = getApp()
+  if (!app || !app.globalData) return
+  app.globalData.isPreview = false
+  app.globalData.previewRole = ''
+  refreshTabBars()
+}
+
+// 刷新当前已显示的自定义 tabBar（预览不改变 tab 可见性，仅重算无副作用）
+function refreshTabBars() {
+  const pages = getCurrentPages()
+  pages.forEach(function (p) {
+    const tb = p.getTabBar && p.getTabBar()
+    if (tb && tb.refresh) tb.refresh()
+  })
+}
+
+// 新增教程：走 addTutorial 云函数（服务端校验上传权限）
+function addTutorial(tutorial) {
+  return wx.cloud.callFunction({ name: 'addTutorial', data: { tutorial: tutorial } })
+    .then(function (res) {
+      const result = (res.result) || {}
+      if (result.success) {
+        markMine(tutorial.id)
+        return result
+      }
+      wx.showToast({ title: result.errMsg || '保存失败', icon: 'none' })
+      return result
+    })
+    .catch(function (err) {
+      console.error('[store] addTutorial failed', err)
+      wx.showToast({ title: '保存失败，请检查云函数是否已部署', icon: 'none' })
+      return { success: false }
+    })
+}
+
+// 删除教程：走 removeTutorial 云函数（服务端校验删除权限）
+function removeTutorial(id) {
+  return wx.cloud.callFunction({ name: 'removeTutorial', data: { id: id } })
+    .then(function (res) {
+      const result = (res.result) || {}
+      if (!result.success) wx.showToast({ title: result.errMsg || '删除失败', icon: 'none' })
+      return result
+    })
+    .catch(function (err) {
+      console.error('[store] removeTutorial failed', err)
+      wx.showToast({ title: '删除失败，请检查云函数是否已部署', icon: 'none' })
+      return { success: false }
+    })
+}
+
+// 管理员修改角色
+function setRole(openid, role) {
+  return wx.cloud.callFunction({ name: 'setRole', data: { openid: openid, role: role } })
+    .then(function (res) { return (res.result) || {} })
+    .catch(function (err) {
+      console.error('[store] setRole failed', err)
+      return { success: false, errMsg: '操作失败' }
+    })
+}
+
+// 管理员列出用户
+function listUsers() {
+  return wx.cloud.callFunction({ name: 'listUsers' })
+    .then(function (res) { return (res.result) || {} })
+    .catch(function (err) {
+      console.error('[store] listUsers failed', err)
+      return { success: false, users: [] }
+    })
+}
+
+// 管理员生成角色邀请码（role: 'uploader' | 'admin'）
+function createInvite(role) {
+  return wx.cloud.callFunction({ name: 'createInvite', data: { role: role } })
+    .then(function (res) { return (res.result) || {} })
+    .catch(function (err) {
+      console.error('[store] createInvite failed', err)
+      return { success: false, errMsg: '生成失败，请检查云函数是否已部署' }
+    })
+}
+
+// 用户激活邀请码：成功后更新本机缓存与全局角色
+function acceptInvite(code) {
+  return wx.cloud.callFunction({ name: 'acceptInvite', data: { code: code } })
+    .then(function (res) {
+      const result = (res.result) || {}
+      if (result.success) {
+        const role = result.role || 'user'
+        wx.setStorageSync(ROLE_KEY, role)
+        const app = getApp()
+        if (app && app.globalData) app.globalData.role = role
+      }
+      return result
+    })
+    .catch(function (err) {
+      console.error('[store] acceptInvite failed', err)
+      return { success: false, errMsg: '激活失败，请检查云函数是否已部署' }
+    })
+}
+
 module.exports = {
   COLLECTION: COLLECTION,
   getAll: getAll,
@@ -95,5 +248,16 @@ module.exports = {
   syncSeedIfEmpty: syncSeedIfEmpty,
   markMine: markMine,
   isMine: isMine,
-  videoSrcOf: videoSrcOf
+  videoSrcOf: videoSrcOf,
+  getRole: getRole,
+  getRealUser: getRealUser,
+  getCurrentUser: getCurrentUser,
+  setPreviewRole: setPreviewRole,
+  clearPreview: clearPreview,
+  addTutorial: addTutorial,
+  removeTutorial: removeTutorial,
+  setRole: setRole,
+  listUsers: listUsers,
+  createInvite: createInvite,
+  acceptInvite: acceptInvite
 }

@@ -1,6 +1,6 @@
 const store = require('../../utils/store.js')
 
-const CATEGORIES = ['地铁', '飞机', '做菜', '其他']
+const CATEGORIES = ['衣', '食', '住', '行', '生活', '学习', '其它']
 
 Page({
   data: {
@@ -11,7 +11,22 @@ Page({
     author: '我',
     steps: [''],       // 文字步骤（每行一段）
     videoPath: '',     // 本地选择的视频临时路径
-    submitting: false
+    submitting: false,
+    denied: false
+  },
+
+  onShow() {
+    const me = store.getCurrentUser()
+    this.setData({ denied: me.role === 'user' })
+    this.syncTabBar('/pages/upload/upload')
+  },
+
+  syncTabBar(page) {
+    const tabBar = this.getTabBar && this.getTabBar()
+    if (!tabBar) return
+    tabBar.refresh()
+    const idx = tabBar.data.visibleTabs.findIndex(function (t) { return t.page === page })
+    tabBar.setData({ selected: idx < 0 ? 0 : idx })
   },
 
   onCategoryChange(e) {
@@ -63,6 +78,10 @@ Page({
 
   onSubmit() {
     const that = this
+    if (this.data.denied) {
+      wx.showToast({ title: '无权限，仅上传者/管理员可发布', icon: 'none' })
+      return
+    }
     const title = this.data.title.trim()
     const summary = this.data.summary.trim()
     const category = this.data.categories[this.data.catIndex]
@@ -95,15 +114,18 @@ Page({
         emoji: '📤',
         summary: summary || '由用户上传的教程',
         author: that.data.author,
-        createdAt: Date.now(),
         videoPath: videoPath,   // 云存储 fileID 或空
         steps: steps
       }
-      store.add(tutorial)
-      wx.showToast({ title: '上传成功', icon: 'success' })
-      setTimeout(function () {
-        wx.switchTab({ url: '/pages/index/index' })
-      }, 800)
+      store.addTutorial(tutorial).then(function (res) {
+        that.setData({ submitting: false })
+        if (res && res.success) {
+          wx.showToast({ title: '上传成功', icon: 'success' })
+          setTimeout(function () {
+            wx.switchTab({ url: '/pages/index/index' })
+          }, 800)
+        }
+      })
     }
 
     // 无视频：直接保存

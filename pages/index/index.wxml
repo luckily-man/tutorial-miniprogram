@@ -10,7 +10,7 @@
     <text class="search-icon">🔍</text>
     <input
       class="search-input"
-      placeholder="搜索教程，如：地铁、番茄炒蛋"
+      placeholder="搜索教程，如：番茄炒蛋、手冲咖啡"
       placeholder-class="search-ph"
       value="{{keyword}}"
       bindinput="onSearchInput"

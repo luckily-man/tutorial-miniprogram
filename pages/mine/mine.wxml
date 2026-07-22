@@ -3,8 +3,16 @@
     <view class="avatar">📚</view>
     <view class="mine-info">
       <view class="mine-name">我的教程</view>
-      <view class="mine-sub">共 {{list.length}} 篇 · 云端共享</view>
+      <view class="mine-sub">当前身份：{{roleLabel}} · 共 {{list.length}} 篇</view>
     </view>
+  </view>
+
+  <!-- 邀请码激活：仅普通用户可自助升级，上传者/管理员无需显示 -->
+  <view wx:if="{{role === 'user'}}" class="card">
+    <view class="sec-title"><text class="sec-bar"></text>邀请码激活</view>
+    <view class="a-tip-inline">拿到管理员给的邀请码？粘贴后激活即可升级身份，无需提供 openid。</view>
+    <input class="a-input" placeholder="输入邀请码" value="{{activateCode}}" bindinput="onCodeInput" />
+    <button class="btn-primary" bindtap="activate">激活</button>
   </view>
 
   <view wx:if="{{list.length > 0}}">
@@ -18,15 +26,15 @@
           <text class="m">{{item.steps.length}} 步</text>
         </view>
       </view>
-      <view class="item-del" wx:if="{{item.mine}}" catchtap="onDelete" data-id="{{item.id}}">删除</view>
+      <view class="item-del" wx:if="{{item.canDelete}}" catchtap="onDelete" data-id="{{item.id}}">删除</view>
     </view>
   </view>
 
   <view wx:else class="empty">
     <view class="empty-emoji">📭</view>
-    <view>还没有教程</view>
-    <view class="empty-sub">去「上传」分享一个吧～</view>
+    <view>{{role === 'user' ? '你还没有上传教程' : '还没有教程'}}</view>
+    <view class="empty-sub">{{role === 'user' ? '激活邀请码后可成为上传者' : '去「上传」分享一个吧～'}}</view>
   </view>
 
-  <button class="btn-primary upload-btn" bindtap="goUpload">去上传教程</button>
+  <button wx:if="{{role !== 'user'}}" class="btn-primary upload-btn" bindtap="goUpload">去上传教程</button>
 </view>

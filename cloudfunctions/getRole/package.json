@@ -1,0 +1,9 @@
+{
+  "name": "getRole",
+  "version": "1.0.0",
+  "description": "获取当前用户角色，首位使用者自动成为管理员",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

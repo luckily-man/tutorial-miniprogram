@@ -97,6 +97,16 @@
   margin-bottom: 16rpx;
 }
 
+.detail-del {
+  margin: 16rpx 4rpx 0;
+  text-align: center;
+  color: #e54d42;
+  font-size: 28rpx;
+  padding: 24rpx;
+  background: #fff0ef;
+  border-radius: 16rpx;
+}
+
 .step {
   display: flex;
   align-items: flex-start;

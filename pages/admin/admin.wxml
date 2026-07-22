@@ -1,0 +1,59 @@
+<view wx:if="{{denied}}" class="denied">
+  <view class="denied-emoji">🔒</view>
+  <view class="denied-title">无权限</view>
+  <view class="denied-sub">用户管理仅管理员可访问。</view>
+</view>
+
+<view wx:else class="container">
+  <view class="a-hero">
+    <view class="a-title">用户管理</view>
+    <view class="a-sub">当前身份：{{me.role === 'admin' ? '管理员' : me.role === 'uploader' ? '上传者' : '普通用户'}} · 我的 openid（点击复制）：</view>
+    <view class="a-openid" bindtap="copyOpenid" data-openid="{{me.openid}}">{{me.openid}}</view>
+  </view>
+
+  <!-- 邀请码：生成后发给对方，对方在「我的」页激活，无需 openid -->
+  <view class="card">
+    <view class="sec-title"><text class="sec-bar"></text>生成邀请码</view>
+    <view class="a-tip-inline">把邀请码发给对方，对方在「我的」页粘贴即可获得对应角色，无需提供 openid。</view>
+    <view class="role-actions">
+      <view class="role-btn" bindtap="genInvite" data-role="uploader">生成「上传者」邀请码</view>
+      <view class="role-btn" bindtap="genInvite" data-role="admin">生成「管理员」邀请码</view>
+    </view>
+    <view wx:if="{{inviteCode}}" class="invite-box">
+      <view class="invite-code">{{inviteCode}}</view>
+      <view class="invite-copy" bindtap="copyInvite">复制</view>
+    </view>
+    <view wx:if="{{inviteCode}}" class="invite-hint">已生成「{{inviteRoleLabel}}」邀请码，7 天内有效，发给对方后对方在「我的」页激活即可。</view>
+  </view>
+
+  <!-- 已注册用户列表 -->
+  <view class="card">
+    <view class="sec-title"><text class="sec-bar"></text>用户列表（{{users.length}}）</view>
+    <view wx:for="{{users}}" wx:key="openid" class="user-row">
+      <view class="user-main">
+        <view class="user-openid" bindtap="copyOpenid" data-openid="{{item.openid}}">{{item.openid}}</view>
+        <view class="user-role">当前：{{item.roleLabel}}</view>
+      </view>
+      <view class="role-actions">
+        <view class="role-btn {{item.role === 'user' ? 'on' : ''}}" data-openid="{{item.openid}}" data-role="user" bindtap="changeRole">普通</view>
+        <view class="role-btn {{item.role === 'uploader' ? 'on' : ''}}" data-openid="{{item.openid}}" data-role="uploader" bindtap="changeRole">上传者</view>
+        <view class="role-btn {{item.role === 'admin' ? 'on' : ''}}" data-openid="{{item.openid}}" data-role="admin" bindtap="changeRole">管理员</view>
+      </view>
+    </view>
+    <view wx:if="{{users.length === 0}}" class="a-empty">暂无用户</view>
+  </view>
+
+  <!-- 本地预览：模拟其他角色看到的页面样式（不改真实权限） -->
+  <view class="card preview-card">
+    <view class="sec-title"><text class="sec-bar"></text>预览其他身份</view>
+    <view class="a-tip-inline">仅本地模拟，不改变真实权限；切换后去「首页 / 上传 / 我的」即可看到对应角色的页面样式。</view>
+    <view class="role-actions">
+      <view class="role-btn {{previewRole === 'user' ? 'on' : ''}}" bindtap="previewAs" data-role="user">普通用户</view>
+      <view class="role-btn {{previewRole === 'uploader' ? 'on' : ''}}" bindtap="previewAs" data-role="uploader">上传者</view>
+      <view class="role-btn {{previewRole === 'admin' ? 'on' : ''}}" bindtap="previewAs" data-role="admin">管理员</view>
+    </view>
+    <view wx:if="{{isPreview}}" class="preview-exit" bindtap="exitPreview">退出预览（当前模拟：{{previewRoleLabel}}）</view>
+  </view>
+
+  <view class="a-tip">提示：用户首次打开小程序即出现在列表中，可直接一键改角色；首位使用者自动成为管理员。</view>
+</view>

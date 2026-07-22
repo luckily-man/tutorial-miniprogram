@@ -1,6 +1,6 @@
 const store = require('../../utils/store.js')
 
-const CATEGORIES = ['全部', '地铁', '飞机', '做菜', '其他']
+const CATEGORIES = ['全部', '衣', '食', '住', '行', '生活', '学习', '其它']
 
 Page({
   data: {
@@ -13,6 +13,15 @@ Page({
   onShow() {
     // 每次显示都刷新（上传/删除后数据会变）
     this.refresh()
+    this.syncTabBar('/pages/index/index')
+  },
+
+  syncTabBar(page) {
+    const tabBar = this.getTabBar && this.getTabBar()
+    if (!tabBar) return
+    tabBar.refresh()
+    const idx = tabBar.data.visibleTabs.findIndex(function (t) { return t.page === page })
+    tabBar.setData({ selected: idx < 0 ? 0 : idx })
   },
 
   onPullDownRefresh() {

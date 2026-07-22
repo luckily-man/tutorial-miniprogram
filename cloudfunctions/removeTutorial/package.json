@@ -1,0 +1,9 @@
+{
+  "name": "removeTutorial",
+  "version": "1.0.0",
+  "description": "删除教程，校验管理员/上传者角色",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

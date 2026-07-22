@@ -66,6 +66,13 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* 单行输入框：显式高度 + 行高，避免 placeholder 竖向被裁切显示一半 */
+.input {
+  padding: 0 22rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+}
+
 .ph {
   color: var(--text-3);
 }
@@ -178,11 +185,31 @@
   background: #000;
 }
 
-.video-del {
+.video-actions {
+  display: flex;
+  gap: 20rpx;
   margin-top: 14rpx;
+}
+
+.video-replace,
+.video-del {
+  flex: 1;
   text-align: center;
-  color: #e54d42;
   font-size: 26rpx;
+  padding: 16rpx 0;
+  border-radius: 12rpx;
+}
+
+.video-replace {
+  color: var(--primary-deep);
+  background: var(--primary-tint);
+  border: 1rpx solid var(--primary-soft);
+}
+
+.video-del {
+  color: #e54d42;
+  background: #fff5f4;
+  border: 1rpx solid #f7d6d2;
 }
 
 .submit {
@@ -194,5 +221,30 @@
   color: var(--text-3);
   text-align: center;
   margin-top: 24rpx;
+  line-height: 1.7;
+}
+
+.denied {
+  margin-top: 200rpx;
+  text-align: center;
+  padding: 0 60rpx;
+  color: var(--text-2);
+}
+
+.denied-emoji {
+  font-size: 96rpx;
+  margin-bottom: 24rpx;
+}
+
+.denied-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.denied-sub {
+  font-size: 26rpx;
+  color: var(--text-3);
+  margin-top: 16rpx;
   line-height: 1.7;
 }

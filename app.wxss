@@ -25,7 +25,7 @@ page {
 }
 
 .container {
-  padding: 24rpx 28rpx 48rpx;
+  padding: 24rpx 28rpx 160rpx;
   box-sizing: border-box;
 }
 
@@ -45,6 +45,24 @@ page {
   opacity: 0.96;
 }
 
+/* ===== 区块标题 ===== */
+.sec-title {
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 20rpx;
+}
+
+.sec-bar {
+  width: 8rpx;
+  height: 30rpx;
+  border-radius: 4rpx;
+  background: var(--grad);
+  margin-right: 14rpx;
+}
+
 /* ===== 分类标签 ===== */
 .tag {
   display: inline-flex;
@@ -60,7 +78,9 @@ page {
 /* ===== 主按钮 ===== */
 .btn-primary {
   width: 100%;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--grad);
   color: #fff;
   border-radius: 999rpx;
@@ -70,6 +90,9 @@ page {
   box-shadow: 0 10rpx 24rpx rgba(7, 193, 96, 0.28);
   line-height: 88rpx;
   height: 88rpx;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .btn-primary::after {

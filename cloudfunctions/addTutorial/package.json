@@ -1,0 +1,9 @@
+{
+  "name": "addTutorial",
+  "version": "1.0.0",
+  "description": "新增教程，校验上传者/管理员角色",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}
